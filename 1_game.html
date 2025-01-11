@@ -27,8 +27,8 @@
         const ctx1 = canvas1.getContext("2d");
 
         //①変数の設定と初期化
-        const target = { x: 250, y: 100, dir: 1 };
-        const player = { x: 250, y: 400 };
+        const target = { x: 250, y: 100, width: 10, height: 10, dir: 1 };
+        const player = { x: 250, y: 400, width: 50, height: 10 };
         const ball = { x: -10, y: -10 };
         let point = 0;
 
@@ -42,16 +42,16 @@
 
             //描画(ゲーゲット)
             ctx1.fillStyle = "black";
-            ctx1.fillRect(target.x - 25, target.y - 5, 50, 10);
+            ctx1.fillRect(target.x - target.width / 2, target.y - target.height / 2, target.width, target.height);
 
             //描画(得点)
             ctx1.fillStyle = "black";
             ctx1.font = "20px sans-serif";
-            ctx1.fillText(point, target.x, target.y - 5);
+            ctx1.fillText("SCORE:" + String(point).padStart(7, '0'), 120, 20);
 
             //描画(プレーヤ)
             ctx1.fillStyle = "blue";
-            ctx1.fillRect(player.x - 25, player.y - 5, 50, 10);
+            ctx1.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
 
             //描画(ボール)
             ctx1.fillStyle = "red";
@@ -83,6 +83,24 @@
             const rect = e.target.getBoundingClientRect();
             player.x = e.clientX - rect.left;
         });
+
+        //当たり判定
+        function collision(rectA, rectB) {
+            const Ax1 = rectA.x - rectA.width / 2
+            const Ay1 = rectA.y - rectA.height / 2
+            const Ax2 = rectA.x + rectA.width / 2
+            const Ay2 = rectA.y + rectA.height / 2
+
+            const Bx1 = rectB.x - rectB.width / 2
+            const By1 = rectB.y - rectB.height / 2
+            const Bx2 = rectB.x + rectB.width / 2
+            const By2 = rectB.y + rectB.height / 2
+            
+            //矩形が当たってない条件
+            const noCollision = Ax2 < Bx1 || Ax1 > Bx2 || Ay2 < By1 || Ay1 > By2
+            //当たってないの否定を返す(当たり判定)
+            return !noCollision
+        }
     </script>
 </body>
 
