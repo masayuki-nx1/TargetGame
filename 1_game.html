@@ -29,9 +29,8 @@
         //①変数の設定と初期化
         const target = { x: 250, y: 100, width: 10, height: 10, dir: 1 };
         const player = { x: 250, y: 400, width: 50, height: 10 };
-        const ball = { x: -10, y: -10, width: 10, height: 10 };
+        const ball = { x: -10, y: -10, width: 10, height: 10, active: false };
         const ballSpeed = 10;   //ボールのスピード
-        let ballActive = false; //ボールが発射されているか？
         let point = 0;
 
         //②一定時間ごとにプログラムgame1を起動させる
@@ -82,8 +81,8 @@
 
         //④shoot関数
         canvas1.addEventListener("mousedown", function () {
-            if (!ballActive) {    //ボールが発射されてないときボールが撃てる
-                ballActive = true
+            if (!ball.active) {    //ボールが発射されてないときボールが撃てる
+                ball.active = true
                 ball.x = player.x;
                 ball.y = player.y;
             }
@@ -116,7 +115,7 @@
 
         //ボール位置初期化
         function ballInit() {
-            ballActive = false
+            ball.active = false
             ball.x = -10;
             ball.y = -10;
         }
