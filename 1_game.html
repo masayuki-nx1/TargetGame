@@ -29,7 +29,9 @@
         //①変数の設定と初期化
         const target = { x: 250, y: 100, width: 10, height: 10, dir: 1 };
         const player = { x: 250, y: 400, width: 50, height: 10 };
-        const ball = { x: -10, y: -10 };
+        const ball = { x: -10, y: -10, width: 10, height: 10 };
+        const ballSpeed = 10;   //ボールのスピード
+        let ballActive = false; //ボールが発射されているか？
         let point = 0;
 
         //②一定時間ごとにプログラムgame1を起動させる
@@ -47,7 +49,7 @@
             //描画(得点)
             ctx1.fillStyle = "black";
             ctx1.font = "20px sans-serif";
-            ctx1.fillText("SCORE:" + String(point).padStart(7, '0'), 120, 20);
+            ctx1.fillText("SCORE:" + String(point).padStart(7, '0'), 120, 20);//スコア表示は0埋め表示
 
             //描画(プレーヤ)
             ctx1.fillStyle = "blue";
@@ -55,33 +57,43 @@
 
             //描画(ボール)
             ctx1.fillStyle = "red";
-            ctx1.fillRect(ball.x - 5, ball.y - 5, 10, 10);
+            ctx1.fillRect(ball.x - ball.width / 2, ball.y - ball.height / 2, ball.width, ball.height);
 
             //移動計算
             target.x += target.dir;
-            ball.y -= 10;
+            ball.y -= ballSpeed;
 
             //壁衝突計算
             if (target.x < 25 || 295 < target.x) {
                 target.dir *= -1;
             }
 
+            //ボールが画面外に出た時
+            if (ball.y <= -10) {
+                ballInit();
+            }
+
             //得点計算
-            if ((ball.y === 100) && (Math.abs(target.x - ball.x) < 25)) {
+            if (collision(ball, target)) {
+                ballInit();
                 point++;
             }
         }
 
         //④shoot関数
         canvas1.addEventListener("mousedown", function () {
-            ball.x = player.x;
-            ball.y = player.y;
+            if (!ballActive) {    //ボールが発射されてないときボールが撃てる
+                ballActive = true
+                ball.x = player.x;
+                ball.y = player.y;
+            }
         });
 
         //⑤プレーヤコントロール
         canvas1.addEventListener("mousemove", function (e) {
             const rect = e.target.getBoundingClientRect();
             player.x = e.clientX - rect.left;
+            // player.y = e.clientY;//当たり判定デバッグ用
         });
 
         //当たり判定
@@ -95,11 +107,18 @@
             const By1 = rectB.y - rectB.height / 2
             const Bx2 = rectB.x + rectB.width / 2
             const By2 = rectB.y + rectB.height / 2
-            
+
             //矩形が当たってない条件
             const noCollision = Ax2 < Bx1 || Ax1 > Bx2 || Ay2 < By1 || Ay1 > By2
             //当たってないの否定を返す(当たり判定)
             return !noCollision
+        }
+
+        //ボール位置初期化
+        function ballInit() {
+            ballActive = false
+            ball.x = -10;
+            ball.y = -10;
         }
     </script>
 </body>
