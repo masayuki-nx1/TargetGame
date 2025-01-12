@@ -77,7 +77,7 @@
             //描画(得点)
             ctx1.fillStyle = "black";
             ctx1.font = "20px sans-serif";
-            ctx1.fillText("SCORE:" + String(point).padStart(7, '0'), 120, 20);  //スコア表示は0埋め表示
+            ctx1.fillText("SCORE:" + String(point).padStart(7, '0'), 120, 30);  //スコア表示は0埋め表示
 
             //描画(プレーヤ)
             ctx1.fillStyle = "blue";
@@ -101,7 +101,7 @@
             //得点計算
             hitCheck();
 
-            //ゲームクリア判定(ボールを全て撃ち終わったら)
+            //ゲームクリア判定(ボールを全て撃ち終わったら、メッセージを表示)
             if (BALL_MAX <= ballCount) {
                 ctx1.fillStyle = "black";
                 ctx1.font = "20px sans-serif";
