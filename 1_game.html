@@ -170,7 +170,7 @@
                 if (balls[i].alive && isCollision(balls[i], target)) {
                     balls[i].alive = false;     //ボールの生存判定をOFF
                     balls[i].active = false;    //ボールの移動中判定をOFF
-                    point++;
+                    point += 120;
                 }
             }
         }
@@ -179,7 +179,8 @@
         function ballOffScreen() {
             for (let i = 0; i < BALL_MAX; i++) {
                 if (balls[i].y < 0) {
-                    balls[i].alive = false;
+                    balls[i].alive = false;     //ボールの生存判定をOFF
+                    balls[i].active = false;    //ボールの移動中判定をOFF
                 }
             }
         }
