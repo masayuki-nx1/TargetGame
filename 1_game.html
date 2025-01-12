@@ -26,6 +26,13 @@
         const canvas1 = document.getElementById("canvas1");
         const ctx1 = canvas1.getContext("2d");
 
+        //音声の読み込み
+        const SE_shot = new Audio();
+        SE_shot.src = "SE_shot.mp3";
+
+        const SE_hit = new Audio();
+        SE_hit.src = "SE_hit.mp3";
+
         //①変数の設定と初期化
         const target = { x: 250, y: 100, width: 20, height: 20, dir: 1 };
         const player = { x: 250, y: 400, width: 50, height: 10 };
@@ -43,6 +50,9 @@
 
         //発射されてたボールの数
         let ballCount = 0;
+
+        //sin波で揺らすためのカウンター
+        let frameCount = 0;
 
         //ボールの初期化
         initBall();
@@ -72,7 +82,7 @@
             drawBall();
 
             //移動計算
-            target.x += target.dir;
+            moveTarget();
             moveBall();
 
             //ターゲットの壁衝突計算(壁に当たると反射する)
@@ -101,6 +111,8 @@
                 balls[ballCount].x = player.x;
                 balls[ballCount].y = player.y;
                 ballCount++;
+                //効果音を鳴らす
+                SE_shot.play();
             }
         });
 
@@ -171,6 +183,8 @@
                     balls[i].alive = false;     //ボールの生存判定をOFF
                     balls[i].active = false;    //ボールの移動中判定をOFF
                     point += 120;
+                    //効果音を鳴らす
+                    SE_hit.play();
                 }
             }
         }
@@ -185,6 +199,15 @@
             }
         }
 
+        //ターゲットの移動処理
+        function moveTarget() {
+            target.x += target.dir;
+            target.y = 100 + 50 * Math.sin(frameCount / 180 * Math.PI)  //sin関数で波状に動かす
+            frameCount += 1;    //1フレーム事にカウントする
+            if (frameCount >= 180) {
+                frameCount = 0;
+            }
+        }
     </script>
 </body>
 
