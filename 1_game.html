@@ -27,10 +27,13 @@
         const ctx1 = canvas1.getContext("2d");
 
         //①変数の設定と初期化
-        const target = { x: 250, y: 100, width: 10, height: 10, dir: 1 };
+        const target = { x: 250, y: 100, width: 10, height: 10, dir: 1, active: false };
         const player = { x: 250, y: 400, width: 50, height: 10 };
         const ball = { x: -10, y: -10, width: 10, height: 10, active: false };
-        const ballSpeed = 10;   //ボールのスピード
+
+        const BALL_MAX = 3;
+        const BALL_SPEED = 10;   //ボールのスピード
+
         let point = 0;
 
         //②一定時間ごとにプログラムgame1を起動させる
@@ -60,7 +63,7 @@
 
             //移動計算
             target.x += target.dir;
-            ball.y -= ballSpeed;
+            ball.y -= BALL_SPEED;
 
             //壁衝突計算
             if (target.x < 25 || 295 < target.x) {
@@ -97,6 +100,7 @@
 
         //当たり判定
         function collision(rectA, rectB) {
+            //各矩形の左上の座標、右下の座標を求める
             const Ax1 = rectA.x - rectA.width / 2
             const Ay1 = rectA.y - rectA.height / 2
             const Ax2 = rectA.x + rectA.width / 2
